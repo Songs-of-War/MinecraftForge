@@ -102,7 +102,7 @@ public class ModDiscoverer {
                 .map(IModLocator::scanMods)
                 .flatMap(Collection::stream)
                 .peek(mf -> LOGGER.debug(SCAN,"Found mod file {} of type {} with locator {}", mf.getFileName(), mf.getType(), mf.getLocator()))
-                .peek(mf -> StartupMessageManager.modLoaderConsumer().ifPresent(c->c.accept("Found mod file "+mf.getFileName()+" of type "+mf.getType())))
+                .peek(mf -> StartupMessageManager.modLoaderConsumer().ifPresent(c->c.accept("")))
                 .map(ModFile.class::cast)
                 .collect(Collectors.groupingBy(IModFile::getType));
 
@@ -120,7 +120,7 @@ public class ModDiscoverer {
             }
         }
         LOGGER.debug(SCAN,"Found {} mod files with {} mods", mods::size, ()->mods.stream().mapToInt(mf -> mf.getModInfos().size()).sum());
-        StartupMessageManager.modLoaderConsumer().ifPresent(c->c.accept("Found "+mods.size()+" modfiles to load"));
+        //StartupMessageManager.modLoaderConsumer().ifPresent(c->c.accept("Found "+mods.size()+" modfiles to load"));
         final LoadingModList loadingModList = ModSorter.sort(mods);
         loadingModList.addCoreMods();
         loadingModList.addAccessTransformers();

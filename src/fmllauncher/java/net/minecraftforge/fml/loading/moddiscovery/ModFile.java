@@ -161,7 +161,7 @@ public class ModFile implements IModFile {
         if (throwable != null) {
             this.scanError = throwable;
         }
-        StartupMessageManager.modLoaderConsumer().ifPresent(c->c.accept("Completed deep scan of "+this.getFileName()));
+        //StartupMessageManager.modLoaderConsumer().ifPresent(c->c.accept("Completed deep scan of "+this.getFileName()));
     }
 
     public void setFileProperties(Map<String, Object> fileProperties)

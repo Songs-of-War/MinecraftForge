@@ -184,7 +184,7 @@ public class FMLLoader
         dist = commonLaunchHandler.getDist();
         production = commonLaunchHandler.isProduction();
         progressWindowTick = EarlyProgressVisualization.INSTANCE.accept(dist);
-        StartupMessageManager.modLoaderConsumer().ifPresent(c->c.accept("Early Loading!"));
+        StartupMessageManager.modLoaderConsumer().ifPresent(c->c.accept("Loading Songs of War!"));
         accessTransformer.getExtension().accept(Pair.of(naming, "srg"));
 
         mcVersion = (String) arguments.get("mcVersion");
@@ -244,7 +244,7 @@ public class FMLLoader
     public static void beforeStart(ITransformingClassLoader launchClassLoader)
     {
         FMLLoader.launchClassLoader = (TransformingClassLoader) launchClassLoader.getInstance();
-        StartupMessageManager.modLoaderConsumer().ifPresent(c->c.accept("Launching minecraft"));
+        StartupMessageManager.modLoaderConsumer().ifPresent(c->c.accept("Launching Songs of War..."));
         progressWindowTick.run();
     }
 

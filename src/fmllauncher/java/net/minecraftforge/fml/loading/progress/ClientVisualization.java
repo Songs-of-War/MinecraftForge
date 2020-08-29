@@ -81,7 +81,7 @@ class ClientVisualization implements EarlyProgressVisualization.Visualization {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
-        window = glfwCreateWindow(screenWidth, screenHeight, "FML early loading progress", NULL, NULL);
+        window = glfwCreateWindow(screenWidth, screenHeight, "Songs of War is Loading", NULL, NULL);
         if (window == NULL) {
             throw new RuntimeException("Failed to create the GLFW window"); // ignore it and make the GUI optional?
         }
@@ -234,7 +234,7 @@ class ClientVisualization implements EarlyProgressVisualization.Visualization {
         memorycolour[2] = ((i) & 0xFF) / 255.0f;
         memorycolour[1] = ((i >> 8 ) & 0xFF) / 255.0f;
         memorycolour[0] = ((i >> 16 ) & 0xFF) / 255.0f;
-        renderMessage(memory, memorycolour, 1, 1.0f);
+        //renderMessage(memory, memorycolour, 1, 1.0f);
     }
 
     private void renderMessage(final String message, final float[] colour, int row, float alpha) {

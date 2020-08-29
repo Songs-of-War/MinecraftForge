@@ -82,11 +82,11 @@ public class BrandingControl
     }
 
     public static String getClientBranding() {
-        return "forge";
+        return "SoW-Serv";
     }
 
     public static String getServerBranding() {
-        return "forge";
+        return "SoW-Serv";
     }
 
     public static IResourceManagerReloadListener resourceManagerReloadListener() {

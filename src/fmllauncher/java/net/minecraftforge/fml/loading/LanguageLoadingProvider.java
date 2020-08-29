@@ -128,7 +128,7 @@ public class LanguageLoadingProvider
                 throw new RuntimeException("Failed to find implementation version for language provider "+ lp.name());
             }
             LOGGER.debug(CORE, "Found language provider {}, version {}", lp.name(), impl);
-            StartupMessageManager.modLoaderConsumer().ifPresent(c->c.accept("Loaded language provider "+lp.name()+ " " + impl));
+            //StartupMessageManager.modLoaderConsumer().ifPresent(c->c.accept("Loaded language provider "+lp.name()+ " " + impl));
             languageProviderMap.put(lp.name(), new ModLanguageWrapper(lp, new DefaultArtifactVersion(impl)));
         });
     }

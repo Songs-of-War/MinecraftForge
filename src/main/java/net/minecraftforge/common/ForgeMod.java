@@ -108,7 +108,7 @@ public class ForgeMod implements WorldPersistenceHooks.WorldPersistenceHook
         modEventBus.register(ForgeConfig.class);
         // Forge does not display problems when the remote is not matching.
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, ()-> Pair.of(()->"ANY", (remote, isServer)-> true));
-        StartupMessageManager.addModMessage("Forge version "+ForgeVersion.getVersion());
+        //StartupMessageManager.addModMessage("Forge version "+ForgeVersion.getVersion());
     }
 
     public void preInit(FMLCommonSetupEvent evt)

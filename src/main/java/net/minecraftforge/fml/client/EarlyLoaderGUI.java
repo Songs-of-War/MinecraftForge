@@ -102,7 +102,7 @@ public class EarlyLoaderGUI {
         memorycolour[2] = ((i) & 0xFF) / 255.0f;
         memorycolour[1] = ((i >> 8 ) & 0xFF) / 255.0f;
         memorycolour[0] = ((i >> 16 ) & 0xFF) / 255.0f;
-        renderMessage(memory, memorycolour, 1, 1.0f);
+        //renderMessage(memory, memorycolour, 1, 1.0f);
     }
 
     void renderMessage(final String message, final float[] colour, int line, float alpha) {

@@ -149,16 +149,16 @@ public class ModLoader
 
     public void loadMods(Executor mainThreadExecutor, Consumer<Consumer<Supplier<Event>>> preSidedRunnable, Consumer<Consumer<Supplier<Event>>> postSidedRunnable) {
         DeferredWorkQueue.workExecutor = mainThreadExecutor;
-        statusConsumer.ifPresent(c->c.accept("Loading mod config"));
+        //statusConsumer.ifPresent(c->c.accept("Loading mod config"));
         DistExecutor.runWhenOn(Dist.CLIENT, ()->()-> ConfigTracker.INSTANCE.loadConfigs(ModConfig.Type.CLIENT, FMLPaths.CONFIGDIR.get()));
         ConfigTracker.INSTANCE.loadConfigs(ModConfig.Type.COMMON, FMLPaths.CONFIGDIR.get());
-        statusConsumer.ifPresent(c->c.accept("Mod setup: SETUP"));
+        //statusConsumer.ifPresent(c->c.accept("Mod setup: SETUP"));
         dispatchAndHandleError(LifecycleEventProvider.SETUP, mainThreadExecutor, null);
-        statusConsumer.ifPresent(c->c.accept("Mod setup: SIDED SETUP"));
+        //statusConsumer.ifPresent(c->c.accept("Mod setup: SIDED SETUP"));
         mainThreadExecutor.execute(()->preSidedRunnable.accept(c->ModList.get().forEachModContainer((mi,mc)->mc.acceptEvent(c.get()))));
         dispatchAndHandleError(LifecycleEventProvider.SIDED_SETUP, mainThreadExecutor, null);
         mainThreadExecutor.execute(()->postSidedRunnable.accept(c->ModList.get().forEachModContainer((mi,mc)->mc.acceptEvent(c.get()))));
-        statusConsumer.ifPresent(c->c.accept("Mod setup complete"));
+        //statusConsumer.ifPresent(c->c.accept("Mod setup complete"));
     }
 
     private static class SpacedRunnable implements Executor {
@@ -174,16 +174,16 @@ public class ModLoader
         }
     }
     public void gatherAndInitializeMods(final Runnable ticker) {
-        statusConsumer.ifPresent(c->c.accept("Waiting for scan to complete"));
+        //statusConsumer.ifPresent(c->c.accept("Waiting for scan to complete"));
         FMLLoader.backgroundScanHandler.waitForScanToComplete(ticker);
-        statusConsumer.ifPresent(c->c.accept("Loading mods"));
+        //statusConsumer.ifPresent(c->c.accept("Loading mods"));
         final ModList modList = ModList.of(loadingModList.getModFiles().stream().map(ModFileInfo::getFile).collect(Collectors.toList()), loadingModList.getMods());
         if (!this.loadingExceptions.isEmpty()) {
             LOGGER.fatal(CORE, "Error during pre-loading phase", loadingExceptions.get(0));
             modList.setLoadedMods(Collections.emptyList());
             throw new LoadingFailedException(loadingExceptions);
         }
-        statusConsumer.ifPresent(c->c.accept("Building Mod List"));
+        //statusConsumer.ifPresent(c->c.accept("Building Mod List"));
         final List<ModContainer> modContainers = loadingModList.getModFiles().stream().
                 map(ModFileInfo::getFile).
                 map(mf -> buildMods(mf, launchClassLoader)).
@@ -196,15 +196,15 @@ public class ModLoader
         }
         modList.setLoadedMods(modContainers);
         SpacedRunnable sr = new SpacedRunnable();
-        statusConsumer.ifPresent(c->c.accept(String.format("Constructing %d mods", modList.size())));
+        //statusConsumer.ifPresent(c->c.accept(String.format("Constructing %d mods", modList.size())));
         dispatchAndHandleError(LifecycleEventProvider.CONSTRUCT, sr, ticker);
-        statusConsumer.ifPresent(c->c.accept("Creating registries"));
+        //statusConsumer.ifPresent(c->c.accept("Creating registries"));
         GameData.fireCreateRegistryEvents(LifecycleEventProvider.CREATE_REGISTRIES, event -> dispatchAndHandleError(event, sr, ticker));
         ObjectHolderRegistry.findObjectHolders();
         CapabilityManager.INSTANCE.injectCapabilities(modList.getAllScanData());
-        statusConsumer.ifPresent(c->c.accept("Populating registries"));
+        //statusConsumer.ifPresent(c->c.accept("Populating registries"));
         GameData.fireRegistryEvents(rl->true, LifecycleEventProvider.LOAD_REGISTRIES, event -> dispatchAndHandleError(event, sr, ticker));
-        statusConsumer.ifPresent(c->c.accept("Early mod loading complete"));
+        //statusConsumer.ifPresent(c->c.accept("Early mod loading complete"));
     }
 
     private void dispatchAndHandleError(LifecycleEventProvider event, Executor executor, final Runnable ticker) {
@@ -263,16 +263,16 @@ public class ModLoader
     public void finishMods(Executor mainThreadExecutor)
     {
         DeferredWorkQueue.workExecutor = mainThreadExecutor;
-        statusConsumer.ifPresent(c->c.accept("Mod setup: ENQUEUE IMC"));
+        //statusConsumer.ifPresent(c->c.accept("Mod setup: ENQUEUE IMC"));
         dispatchAndHandleError(LifecycleEventProvider.ENQUEUE_IMC, mainThreadExecutor, null);
-        statusConsumer.ifPresent(c->c.accept("Mod setup: PROCESS IMC"));
+        //statusConsumer.ifPresent(c->c.accept("Mod setup: PROCESS IMC"));
         dispatchAndHandleError(LifecycleEventProvider.PROCESS_IMC, mainThreadExecutor, null);
-        statusConsumer.ifPresent(c->c.accept("Mod setup: Final completion"));
+        //statusConsumer.ifPresent(c->c.accept("Mod setup: Final completion"));
         dispatchAndHandleError(LifecycleEventProvider.COMPLETE, mainThreadExecutor, null);
-        statusConsumer.ifPresent(c->c.accept("Freezing data"));
+        //statusConsumer.ifPresent(c->c.accept("Freezing data"));
         GameData.freezeData();
         NetworkRegistry.lock();
-        statusConsumer.ifPresent(c->c.accept(String.format("Mod loading complete - %d mods loaded", ModList.get().size())));
+        //statusConsumer.ifPresent(c->c.accept(String.format("Mod loading complete - %d mods loaded", ModList.get().size())));
     }
 
     public List<ModLoadingWarning> getWarnings()
